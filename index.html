@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Полное видео — Telegram</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Meta Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1413695077434129');
+    fbq('track', 'PageView');
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+         src="https://www.facebook.com/tr?id=1413695077434129&ev=PageView&noscript=1" />
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  <style>
+    :root {
+      --tg-blue: #2481cc;
+      --tg-blue-hover: #1c6fb3;
+      --tg-blue-light: #3390ec;
+      --bg-gradient-1: #d4e8d2;
+      --bg-gradient-2: #e7f0c3;
+      --bg-gradient-3: #c4e1c5;
+      --card-bg: #ffffff;
+      --text-main: #000000;
+      --text-secondary: #707579;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 50%, var(--bg-gradient-3) 100%);
+      background-size: 200% 200%;
+      animation: bgShift 12s ease infinite;
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Верхняя шапка в стиле Telegram Web / t.me */
+    .tg-header {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      height: 56px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .tg-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .tg-logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(180deg, #37aee2 0%, #1e96c8 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(36, 129, 204, 0.3);
+    }
+
+    .tg-logo svg {
+      width: 18px;
+      height: 18px;
+      fill: #ffffff;
+      transform: translateX(-1px);
+    }
+
+    .tg-header-btn {
+      background: var(--tg-blue-light);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 20px;
+      text-decoration: none;
+      transition: background 0.2s ease, transform 0.15s ease;
+    }
+
+    .tg-header-btn:hover {
+      background: var(--tg-blue);
+    }
+
+    /* Основной контейнер */
+    .page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+    }
+
+    /* Карточка в стиле Telegram */
+    .card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 400px;
+      border-radius: 24px;
+      padding: 36px 24px 30px;
+      text-align: center;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+      position: relative;
+      animation: cardAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+    }
+
+    @keyframes cardAppear {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Аватарка / Иконка видео */
+    .avatar-wrap {
+      position: relative;
+      width: 104px;
+      height: 104px;
+      margin: 0 auto 20px;
+    }
+
+    .avatar {
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #3390ec 0%, #1d6fb8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(51, 144, 236, 0.35);
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar svg {
+      width: 42px;
+      height: 42px;
+      fill: #ffffff;
+      transform: translateX(3px);
+    }
+
+    .avatar-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 2px solid rgba(51, 144, 236, 0.35);
+      animation: ringPulse 2.4s infinite ease-out;
+      z-index: 1;
+    }
+
+    @keyframes ringPulse {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(1.25);
+        opacity: 0;
+      }
+    }
+
+    /* Бейдж статуса */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eef6fd;
+      color: var(--tg-blue-light);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #2ecc71;
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* Заголовок "Полное видео ниже" */
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 18px;
+    }
+
+    /* Анимированная стрелка вниз */
+    .arrow-down {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+      color: var(--tg-blue-light);
+      animation: bounceArrow 1.4s infinite ease-in-out;
+    }
+
+    @keyframes bounceArrow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* Большая синяя кнопка "Смотреть видео" */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 18px 24px;
+      background: linear-gradient(180deg, #3797f0 0%, #2481cc 100%);
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      text-decoration: none;
+      border-radius: 16px;
+      box-shadow: 0 8px 22px rgba(36, 129, 204, 0.38);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+      animation: btnPulse 2.2s infinite;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: linear-gradient(180deg, #2d8ce6 0%, #1d72b8 100%);
+      box-shadow: 0 10px 26px rgba(36, 129, 204, 0.48);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* Эффект блика на кнопке */
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.32) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: skewX(-25deg);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -75%; }
+      40%, 100% { left: 130%; }
+    }
+
+    @keyframes btnPulse {
+      0% { box-shadow: 0 0 0 0 rgba(51, 144, 236, 0.55); }
+      70% { box-shadow: 0 0 0 14px rgba(51, 144, 236, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(51, 144, 236, 0); }
+    }
+
+    .btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #8e9398;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Верхняя панель Telegram -->
+  <header class="tg-header">
+    <a href="https://t.me/workfortou" class="tg-brand lead-trigger">
+      <div class="tg-logo">
+        <svg viewBox="0 0 24 24">
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+        </svg>
+      </div>
+      <span>Telegram</span>
+    </a>
+    <a href="https://t.me/workfortou" class="tg-header-btn lead-trigger">Открыть</a>
+  </header>
+
+  <!-- Основной контент -->
+  <main class="page">
+    <div class="card">
+      <div class="avatar-wrap">
+        <div class="avatar-ring"></div>
+        <div class="avatar">
+          <svg viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span>Доступно в Telegram</span>
+      </div>
+
+      <h1>Полное видео ниже</h1>
+
+      <p class="subtitle">
+        Нажмите на синюю кнопку ниже, чтобы перейти в канал и включить просмотр
+      </p>
+
+      <div class="arrow-down">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14"/>
+          <path d="m19 12-7 7-7-7"/>
+        </svg>
+      </div>
+
+      <a id="cta-btn" class="btn lead-trigger" href="https://t.me/workfortou">
+        <svg viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+        <span>Смотреть видео</span>
+      </a>
+
+      <p class="footer-note">
+        Если Telegram не открылся автоматически, нажмите кнопку ещё раз
+      </p>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const targetUrl = 'https://t.me/workfortou';
+      const triggers = document.querySelectorAll('.lead-trigger');
+      let leadSent = false;
+
+      triggers.forEach(function (el) {
+        el.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          // Отправляем событие Lead один раз за сессию, чтобы не дублировать конверсии
+          if (!leadSent && typeof fbq === 'function') {
+            fbq('track', 'Lead');
+            leadSent = true;
+          }
+
+          // Небольшая задержка 250 мс, чтобы пиксель гарантированно успел отправить запрос до редиректа
+          setTimeout(function () {
+            window.location.href = targetUrl;
+          }, 250);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
